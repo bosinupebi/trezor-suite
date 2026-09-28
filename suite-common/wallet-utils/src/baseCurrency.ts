@@ -109,6 +109,7 @@ type ParseBaseCurrencyToFormattedCryptoParams = {
     value: BigNumber; // Intentionally no Branded Type. We don't know if it is in Units or Sub-Units.
     rate: number;
     cryptoDecimals: number;
+    roundingMode?: BigNumber.RoundingMode;
 };
 
 export const parseBaseCurrencyToFormattedCrypto = ({
@@ -117,6 +118,7 @@ export const parseBaseCurrencyToFormattedCrypto = ({
     value,
     rate,
     cryptoDecimals,
+    roundingMode,
 }: ParseBaseCurrencyToFormattedCryptoParams) => {
     // 1. When BTC is used as BaseCurrency, and we display all in Sats, we have to perform
     // the conversion from sats->btc
@@ -143,5 +145,5 @@ export const parseBaseCurrencyToFormattedCrypto = ({
     // 4. We have to return this correctly rounded as this value is used in the NumberInput
     const finalValueDecimals = isCryptoInSats ? 0 : cryptoDecimals; // round units, not subunits
 
-    return valueToDisplay?.toFixed(finalValueDecimals) ?? null;
+    return valueToDisplay?.toFixed(finalValueDecimals, roundingMode) ?? null;
 };
